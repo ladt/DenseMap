@@ -72,12 +72,12 @@ if __name__ == "__main__":
     # Concatenate LiDAR position with the intesity (3), with (2) we would have the depth
     lidarOnImage = np.concatenate((lidarOnImage, lidar[mask,2].reshape(-1,1)), 1)
 
-    out = dense_map(lidarOnImage.T, img.shape[1], img.shape[0], 4)
+    out = dense_map(lidarOnImage.T, img.shape[1], img.shape[0], 5)
 
     out_dir = 'output'
     os.makedirs(out_dir, exist_ok=True)
     out_path = os.path.join(out_dir, "depth_map_%06d.png" % cur_id)
-    # plt.imshow(out)
-    # plt.show()
-    plt.figure(figsize=(20,40))
-    plt.imsave(out_path, out)
+    plt.imshow(out)
+    plt.show()
+    # plt.figure(figsize=(20,40))
+    # plt.imsave(out_path, out)
