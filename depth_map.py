@@ -4,7 +4,7 @@ import numpy as np
 def dense_map(Pts, n, m, grid):
     '''
     interpolate lidar depth
-    :param Pts: num observations of (x, y, z) lidar values (corrsponding to (x,y) image positions), Pts.shape==(3, num)
+    :param Pts: num observations of (W, H, D) lidar coordinates (D - depth corrsponding to (W,H) image positions), Pts.shape==(3, num)
     :param n: image width
     :param m: image height
     :param grid: (grid*2+1) is neighborhood size

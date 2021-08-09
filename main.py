@@ -61,7 +61,6 @@ if __name__ == "__main__":
     cur_id = 1
     # Loading the image
     img = cv2.imread(os.path.join(image_dir, "%06d.png" % cur_id))
-    print(os.path.join(image_dir, "%06d.png" % cur_id))
     # Loading the LiDAR data
     lidar = np.fromfile(os.path.join(velodyne_dir, "%06d.bin" % cur_id), dtype=np.float32).reshape(-1, 4)
     # Loading Calibration
@@ -73,8 +72,8 @@ if __name__ == "__main__":
     # Concatenate LiDAR position with the intesity (3), with (2) we would have the depth
     lidarOnImage = np.concatenate((lidarOnImage, lidar[mask,2].reshape(-1,1)), 1)
 
-    print(img.shape[1], img.shape[0])
     out = dense_map(lidarOnImage.T, img.shape[1], img.shape[0], 4)
+
     out_dir = 'output'
     os.makedirs(out_dir, exist_ok=True)
     out_path = os.path.join(out_dir, "depth_map_%06d.png" % cur_id)
