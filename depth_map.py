@@ -2,6 +2,14 @@ import numpy as np
 
 # From Github https://github.com/balcilar/DenseDepthMap
 def dense_map(Pts, n, m, grid):
+    '''
+    interpolate lidar depth
+    :param Pts: num observations of (x, y, z) lidar values (corrsponding to (x,y) image positions), Pts.shape==(3, num)
+    :param n: image width
+    :param m: image height
+    :param grid: (grid*2+1) is neighborhood size
+    :return:
+    '''
     ng = 2 * grid + 1
     
     mX = np.zeros((m,n)) + np.float("inf")

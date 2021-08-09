@@ -48,19 +48,20 @@ class Calibration:
         points_2d[:,0] /= points_2d[:,2]
         points_2d[:,1] /= points_2d[:,2]
         
-        mask = (points_2d[:,0] >= 0) & (points_2d[:,0] <= 1242) & (points_2d[:,1] >= 0) & (points_2d[:,1] <= 375)
+        mask = (points_2d[:,0] >= 0) & (points_2d[:,0] <= 1242) & (points_2d[:,1] >= 0) & (points_2d[:,1] <= 375) # 375, 1242 are image dimensions
         mask = mask & (rect_pts[:,2] > 2)
         return points_2d[mask,0:2], mask
 
 if __name__ == "__main__":
-    root = "data/"
+    root = "./data"
     image_dir = os.path.join(root, "image_2")
     velodyne_dir = os.path.join(root, "velodyne")
     calib_dir = os.path.join(root, "calib")
     # Data id
-    cur_id = 21
+    cur_id = 1
     # Loading the image
     img = cv2.imread(os.path.join(image_dir, "%06d.png" % cur_id))
+    print(os.path.join(image_dir, "%06d.png" % cur_id))
     # Loading the LiDAR data
     lidar = np.fromfile(os.path.join(velodyne_dir, "%06d.bin" % cur_id), dtype=np.float32).reshape(-1, 4)
     # Loading Calibration
@@ -72,6 +73,12 @@ if __name__ == "__main__":
     # Concatenate LiDAR position with the intesity (3), with (2) we would have the depth
     lidarOnImage = np.concatenate((lidarOnImage, lidar[mask,2].reshape(-1,1)), 1)
 
-    out = dense_map(lidarOnImage.T, img.shape[1], img.shape[0], 1)
+    print(img.shape[1], img.shape[0])
+    out = dense_map(lidarOnImage.T, img.shape[1], img.shape[0], 4)
+    out_dir = 'output'
+    os.makedirs(out_dir, exist_ok=True)
+    out_path = os.path.join(out_dir, "depth_map_%06d.png" % cur_id)
+    # plt.imshow(out)
+    # plt.show()
     plt.figure(figsize=(20,40))
-    plt.imsave("depth_map_%06d.png", cur_id, out)
+    plt.imsave(out_path, out)
